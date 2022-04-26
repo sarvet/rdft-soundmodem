@@ -1,0 +1,191 @@
+<html><head><title>
+Operational Considerations Rx Side
+</title></head><body>
+  <h1>Rx Operational Considerations</h1>
+
+  <p>Before recording, set your sound card to sample at 11,025 Hz and
+  16 bits per sample.</p>
+
+  <p>If you forget to set your sound card to 11,025 Hz and 16 bits, convert
+  your recorded files to these values before trying to decode them with
+  "Wyman1x-demod-decode".  The "Wyman1x-demod-decode" program depends on the
+  sampled data having these parameters, but DOES NOT CHECK them.  If the
+  sampling parameters are not 11,025 Hz and 16 bits per sample,
+  "Wyman1x-demod-decode" will fail, and not tell you why it failed.</p>
+
+  <p>The basic principal to follow is to keep your equipment within its
+  linear range of operation.</p>
+
+  <p>If you operate with the RF gain control at maximum and let the AGC limit
+  the signal level, you will get poorer results than if you operate with the
+  RF gain control backed off to the point where you have the best signal to
+  noise ratio.  Having a loud signal is counterproductive, when the loudness
+  comes at the expense of non-linear operation.</p>
+
+  <p>A two tone signal has been developed to aid in setting the audio
+  level.  This two tone signal is also useful in setting the level going into
+  the transmitter.  It is the file named "2tone1180-1520v4-12sec.wav".</p>
+
+  <p>The two tone test signal consists of the sum of an 1180 Hz sinusoid and
+  a 1520 Hz sinusoid.  Note that these frequencies straddle the 1200 Hz and
+  1500 Hz lines on the MMSSTV spectrum display.  During the first 2 seconds
+  of the two tone signal a constant amplitude is maintained.  At the 2 second
+  point in the signal, the amplitude steps down, such that the power drops by
+  3 db.  This level is maintained until the 4 second point in the signal is
+  reached.  At the 4 second point, the amplitude drops again, so that the
+  power drops by another 3 db.  This level is maintained until the 6 second
+  point in the signal.  At the 6 second point, the amplitude steps back to
+  its original level, resulting in a 6 db increase in power.  The last 6
+  seconds of the two tone signal are a repetition of the first 6 seconds.</p>
+
+  <p>If you can receive the transmission of the two tone test signal, from
+  someone you believe is operating within the linear range, then you can
+  adjust the RF gain, AGC, and audio level on the receiver, so that you can
+  hear the -3db, -3db, +6db, -3db, -3db pattern of the two tone signal. 
+  Alternatively, if you have a program that displays the spectrum of an audio
+  signal going into your sound card, you can adjust things so that
+  substantially all of the energy in the two tone signal is at only the two
+  frequencies.  If you see significant energy at more than two frequencies,
+  when monitoring the two tone signal, then something is operating in the
+  non-linear range.</p>
+
+  <p>I found that the linear range of operation of my sound card was
+  essentially the middle half of its dynamic range.  When signals with sample
+  values in the upper quarter, or lowest quarter of my sound card's dynamic
+  range were digitized by my sound card, they showed evidence of non-linear
+  operation.  Since then, I have tried to keep signals I record in the middle
+  quarter to middle half of my sound card's dynamic range.</p>
+
+  <p>When recording, make sure that only the desired input to your sound card
+  is providing the audio signal being recorded.</p>
+
+<img src="0k10.gif">
+  <h2>Spectra of leader, one transmission, three different recordings</h2>
+
+  <a name="ls"></a>
+  <p>The next three plots show the spectrum of the leader
+  section of the same transmission, as received by three different
+  people.  All three recordings of this transmission were decoded
+  successfully.</p>
+
+  <p>Since the first plot shows significant energy at only 12 frequencies, we
+  know that the transmitter and this receiver were both operating in the
+  linear range.</p>
+<img src="1j11.gif">
+  <p>This second plot shows significant energy at more than 12 frequencies,
+  thus, the receiver and/or sound card were being operated in the non-linear
+  range.</p>
+
+  <p>In the plot below, note that the two largest
+  spikes above 2200 Hz are spaced at 230 Hz intervals, and thus are
+  not due to random noise, but to non-linear operation</p>
+<img src="1j12.gif">
+  <p>The spectrum below shows no significant energy at 230 Hz, nor above 2200
+  Hz.  Thus, this receiver was operated within its linear range.</p>
+<img src="1k13.gif">
+  <p>Below is a list of the errors that were corrected in each of the three
+  recordings, whose leader spectra are shown above.</p>
+
+  <p>An <a href="ec-fmt.html">explanation of the error list format</a> is
+  elsewhere.</p>
+  <pre>
+
+For data file: VK3LM13-pm8a.wav
+	using Hamming window and /tmp/work/Wyman1x-demod-decode program
+Block inner  |      outer code      | outer   |       inner code
+  #   code   |       erasures       | code    |         changes
+      changes|1st   2nd   3rd   4th | changes |    0   1   2   3   4
+----  ------ |---   ---   ---   --- |   ---   |  --- --- --- --- ---
+  0     341     0h    0s    0t    6f      1  ||   59 159  82   6   0   +
+  1     334     0h    0s    4t    8f     10  ||   61 156  77   8   0   +
+  2     282     0h    0s    3t    8f      4  ||   97 138  60   8   0   +
+  3     412     5h    0s    3t   20f     13  ||   27 150 101  20   0   +
+  4     412     2h    0s   18t   22f     22  ||   24 134 106  22   0   +
+  5     434     2h    0s    9t   33f     15  ||   29 131 102  33   0   +
+  6     439     2h    0s    6t   34f     18  ||   28 135 101  34   0   +
+  7     253     0h    0s    0t    2f      2  ||  110 141  53   2   0   +
+Decoded result is file: robot-vk3lm-x2hs.png
+  0 bad blocks detected, out of   8 total blocks.
+
+
+For data file: vk3lm14ap6-pm8a.wav
+	using Hamming window and /tmp/work/Wyman1x-demod-decode program
+Block inner  |      outer code      | outer   |       inner code
+  #   code   |       erasures       | code    |         changes
+      changes|1st   2nd   3rd   4th | changes |    0   1   2   3   4
+----  ------ |---   ---   ---   --- |   ---   |  --- --- --- --- ---
+  0     331     1h    0s    3t    3f      5  ||   65 146  88   3   0   +
+  1     413     3h    0s   13t   25f     26  ||   25 142  98  25   0   +
+  2     371     3h    0s    6t   13f     14  ||   36 164  84  13   0   +
+  3     383     8h    0s   10t   31f     25  ||   48 128  81  31   0   +
+  4     380     2h    0s    4t   16f      7  ||   39 158  87  16   0   +
+  5     419     4h    1s    7t   22f     15  ||   26 139 107  22   0   +
+  6     316     1h    0s    1t    4f      7  ||   74 148  78   4   0   +
+  7     331     0h    0s    6t    6f      7  ||   54 167  73   6   0   +
+Decoded result is file: robot-vk3lm-x2hs.png
+  0 bad blocks detected, out of   8 total blocks.
+
+
+For data file: 3lm13-pm8a.wav
+	using Hamming window and /tmp/work/Wyman1x-demod-decode program
+Block inner  |      outer code      | outer   |       inner code
+  #   code   |       erasures       | code    |         changes
+      changes|1st   2nd   3rd   4th | changes |    0   1   2   3   4
+----  ------ |---   ---   ---   --- |   ---   |  --- --- --- --- ---
+  0     402     5h    0s    2t   22f     18  ||   37 144  96  22   0   +
+  1     369     5h    0s    4t   13f     14  ||   39 160  85  13   0   +
+  2     419     4h    0s    5t   17f     19  ||   22 148 110  17   0   +
+  3     354     4h    0s    4t   19f     17  ||   44 173  62  19   0   +
+  4     366     0h    0s    1t   20f      9  ||   64 136  85  20   0   +
+  5     388    11h    0s    5t   34f     14  ||   59 108  89  34   0   +
+  6     329     4h    0s    1t   13f      9  ||   70 146  72  13   0   +
+  7     294     9h    0s    0t   18f     16  ||   93 132  54  18   0   +
+Decoded result is file: robot-vk3lm-x2hs.png
+  0 bad blocks detected, out of   8 total blocks.
+
+  </pre>
+  <p>The middle case, in which the receiver was operated in its non-linear
+  range, had the lowest average number of error free symbols, 45.875 compared 
+  to 54.375 for the first case and to 53.5 for the third case.
+  </p>
+<!--
+<img src="0k14.gif">
+-->
+  <h2>Overall envelop of recorded signals</h2>
+
+  <p>Following are plots showing the overall envelope of each of the three
+  recordings, whose <a href="#ls">leader spectra</a> are shown above.</p>
+
+  <p>At the beginning of the first envelope plot, there is evidence of
+  amplitude changes, due to a 3 second version of the <a href="1j.htm#2t1">two tone
+  signal</a> transmitted just before the chirp signal and the phase modulated
+  signal.</p>
+<img src="1k15.gif">
+  <p>The plot below shows that the amplitude variations from a 3 second version of
+  the <a href="1j.htm#2t1">two tone signal</a> near the beginning of this
+  recording were compressed so that all 3 levels came out the same. 
+  Non-linear operation removed the amplitude variation that was transmitted
+  during the first three seconds of the signal.</p>
+
+  <p>This is the loudest of the three recordings of the same transmission,
+  and it had the smallest average number of error free symbols.  Loudness, at the
+  expense of linearity is counterproductive.</p>
+<img src="1k16.gif">
+  <p>Below is the plot showing the envelope of the third recording of this
+  same transmission.  This plot starts after the 3 second version of the 
+  two tone signal. It is the least loud, of the three recordings, and had
+  about the same average number of error free symbols as the first recording
+  above.</p>
+<!--
+  <p>Keeping everything within its linear range of operation yielded the best
+  results for this transmission.</p>
+-->
+<img src="1k17.gif">
+<hr>
+<!--
+<p>Links to:<ul>
+<li><a href="0l.htm">Next</a> file in sequence
+<li><a href="0j.htm">Previous</a> file in sequence
+<li><a href="index.html#tli">Top Level Index</a>
+-->
+</ul></body></html>

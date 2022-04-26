@@ -1,0 +1,69 @@
+  <html><head><title>Error Correction Table Format</title>
+  </head><body>
+  <h1>Error Correction Table Format</h1>
+  <a name="te"></a>
+  <p>The table headings are:</p>
+  <pre>
+Block inner  |      outer code      | outer   |       inner code
+  #   code   |       erasures       | code    |         changes
+      changes|1st   2nd   3rd   4th | changes |    0   1   2   3   4
+----  ------ |---   ---   ---   --- |   ---   |  --- --- --- --- ---
+  </pre>
+  <p>Below is a list of each of the above column headings,
+  from left to right, and an
+  explanation of what is meant by each column heading.</p>
+
+  <ul>
+
+    <li>"Block #"
+  <p>This is an index, starting with 0, used to internally number the
+  outer code blocks.</p>
+
+    <li>"inner code changes"
+  <p>This is a total of how many of the sub-carriers had their phase 
+  changed by the inner decoder, in its attempt to correct as many errors
+  as it could.</p>
+
+   <li>"outer code erasures"
+  <p>An "erasure" means that an error has probably been detected, but not
+   corrected.  The sub-headings "1st, 2nd, 3rd, and 4th" show how four
+  different categories of erasures, detected by the inner decoder, are to be
+  used by the outer decoder.</p>
+
+  <p> All those in the "1st" column are to be used 1st, followed by those in
+  the "2nd" column, followed by those in the "3rd" column, followed by those
+  in the "4th" column.  The erasures in the "1st" column result from the
+  received combination of phases being too far away from all code words, even
+  when 4 of the 8 sub-carriers are ignored.  The erasures in the 4th column
+  are close enough to the same code word when both 3 and 4, of the 8
+  sub-carriers, are ignored.</p>
+
+  <li>"outer code changes"
+  <p>This is a count of the number of symbols corrected by the outer decoder.
+  A negative number means that the outer decoder recognized that it could NOT
+  decode the block correctly.</p>
+
+  <li>"inner code changes"
+  <p>The five sub-headings, "0, 1, 2, 3, and 4" indicate how many of the 8
+  sub-carriers were changed by the inner decoder.  The numbers in the table
+  are how many of the symbols (in each block) had the respective number of
+  sub-carriers changed by the inner decoder.</p>
+  <p>Thus, the sub-heading "0" is
+  for the case of error free symbols (0 of the 8 sub-carriers were changed
+  by the inner decoder.)</p>
+
+  <li>
+  <p>The last column has no heading.  The possible symbols in this column are:
+  <ul>
+    <li>+
+    <p>which means all errors were corrected</p>
+    <li>-
+    <p>which means not all errors were corrected<p>
+    <li>*
+    <p>which means an illegal symbol was present in the decoded output</p>
+  </ul>
+  <p>All "+" symbols in the last column means all errors were successfully
+  corrected.  Anything else, means not all errors were corrected.</p>
+  </ul>
+  <hr>
+  </body></html>

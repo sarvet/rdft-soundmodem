@@ -1,0 +1,250 @@
+**********************************************************************
+2003 Jun 02  Barry Sanderson
+
+FILE: pm8a-demod-decode6q.c
+	Transfered changes to implement Frequency Change
+  Compensation from development version of the program to this file.
+  Those changes are summarized below:
+	Increased search range for trailer to -250 Hz - +250 Hz.
+	Fixed calculation of frequency offset of trailer (exidxW[]).
+	Changed to new model of linear drift for local oscillator.
+	Limited lead_x[0].sidx to be >= 0.
+	Fixed initialization condition for pv[lo].
+	Sorted some erased symbols, based on distance from a legal value.
+	Added saving of distances for symbols needing 3 subcarrier values
+  changed in order to match a legal value.
+	Changed threshold for framing sequence cross-correlation
+  good/bad discrimination.
+	Added limits on standard deviation of demodulated values for
+  acceptance of a good framing sequence.
+	Added second stage of frequency offset drift compensation.
+	Added compensation for frequency offset drift.
+
+FILE: doc/gcc-stderr.html
+  	Updated to current version.
+
+FILE: doc/index.html
+  	Updated for frequency change compensation.
+
+FILE: doc/pm8a-out-example.html
+  	Updated to current version.
+
+FILE: doc/rx-outline.html
+  	Updated to current version.
+
+FILE: README
+  	Changed "zip" to "tgz".
+----------------------------------------------------------------------
+**********************************************************************
+2003 May 31  Barry Sanderson
+
+FILE: README
+  	Added new 1st paragraph.
+
+FILE: doc/gcc-stderr.html
+  	Updated to current version, one new variable and many line
+  numbers are different.
+
+FILE: doc/index.html
+  	Updated for changed circumstances: chirp signal deleted, l3c and l3t
+  introduced, new variable generates compiler warning.
+
+FILE: doc/pm8a-out-example.html
+  	Updated to current version.
+
+FILE: doc/rx-outline.html
+  	Updated to current version.
+----------------------------------------------------------------------
+**********************************************************************
+2003 May 29  Barry Sanderson
+
+FILE: pm8a-demod-decode6q.c
+	Removed: some commented out code and 'fnok'.
+	Added: printf of copyright statement and warranty disclamer. 
+	Changed logic on use of	default file name for decoded file.  Now the
+  default file name is used if the first block fails to decode properly.
+	Updated verstr[].
+	Made the initialization of 'ilc' independent of	value of 'dbgl'.
+
+FILE: bin2sym307pm8a.c
+  	Added comments related to "PATH_DELIM_*" preprocessor symbols.
+----------------------------------------------------------------------
+**********************************************************************
+2003 May  19  Barry Sanderson
+
+FILE: make-Wyman1x-wav
+	Added: printf of: program name and version string, copyright statement
+  and warranty disclamer.
+	Changed to pass stdout of modulator program and flt-clip-scale-wav
+  program through to the stdout of this program.
+	Chirp signal deleted.
+	l3c and t3c placed around output of modulator program.
+
+FILE: flt-clip-scale-wav.c
+	Added: printf of: program name and version string, copyright
+  statement and warranty disclamer.
+	Updated copyright date.
+
+FILE:  mod-pm8a.c
+	Added: printf of: program name and version string, copyright statement
+  and warranty disclamer.
+	Changed: error messages written to stdout so that they are now written
+  to stderr.
+	Updated copyright date.
+----------------------------------------------------------------------
+**********************************************************************
+2003 May  14  Barry Sanderson
+
+FILE: bin2sym307pm8a.c
+	Changed so that input file name can now be a path name, with
+  just the basename being encoded in the output of this program; any
+  leading directory names are removed from what is to be sent as the
+  file name.  If the compiler preprocessor symbol "PATH_DELIM_BACK"
+  is defined, then the '\' character will be used  as the path separator
+  character; else, if the preprocessor symbol "PATH_DELIM_COLON" is
+  defined, then the ':' character will be used as the path separator
+  character; otherwise, the '/' character will be used as the path
+  separator character.
+  	Added 2003 to copyright statement.
+
+FILE: make-Wyman1x-wav
+  	Added code to allow input path name for file to be encoded,
+  thus file no longer needs to be in current directory.
+  	Added 2003 to copyright statement.
+----------------------------------------------------------------------
+**********************************************************************
+2003 Mar. 21  Barry Sanderson
+
+FILE: pm8a-demod-decode6q.c
+	Restored lsi_centerW back to 47 (from 46).
+ 	Added MCWIL for maximum code word index limit, and set its
+  value to 261 (previously 260 was used).
+	Added 2002, and 2003 to copyright statement. 
+	Updated verstr[].
+----------------------------------------------------------------------
+**********************************************************************
+2003 Jan. 02  Barry Sanderson
+
+FILE: make-Wyman1x-wav
+  	Changed to permit input file names containing space characters.
+  This involved changing from tclsh to tcl in order to use the "system"
+  command provided by Extended Tcl.
+  	Removed commented out code that is no longer used to remove
+  files.
+----------------------------------------------------------------------
+**********************************************************************
+2002 Dec. 31  Barry Sanderson
+
+FILE: pm8a-demod-decode6q.c
+	Fixed limit on index when searching for leader
+  for the case of a single code block with 3 second 2 tone signal
+  and chirp signal.
+	 Changed calculations used to determine best framing sequence
+  for the case of only two framing sequences (only one code block).
+	Removed "Hamming window and" from message identifying program used.
+	Removed code for "Rectangular window and ..." message.
+	Updated verstr[].
+----------------------------------------------------------------------
+**********************************************************************
+2002 Dec. 08  Barry Sanderson
+
+FILE: pm8a-demod-decode6q.c
+	Changed criterion for detection of end of file (for the file being
+  transfered) for the case of unsuccessful decoding of the first block.
+	Introduced ermsg2, to send error message to stderr without
+  changing the value of ilc.
+	Introduced a version string in the print out of the program name.
+----------------------------------------------------------------------
+**********************************************************************
+2002 Oct. 25  Barry Sanderson
+
+FILE: pm8a-demod-decode6q.c
+	Added saving of each correctly decoded block in a separate file,
+  and the deletion of these files when all blocks are decoded correctly.
+	Removed constraint on input file name extension.
+	Removed default mode as optional command line parameter.
+        Changed text for error message number 27.
+	Added text for error message 28.
+	corrected condition for ERN=0 after nrmex.
+
+FILE: doc/index.html
+  	Reorganized links at the top.
+	Added information on new feature (saving of corrected code blocks in
+  separate files).
+----------------------------------------------------------------------
+**********************************************************************
+2002 Oct. 08  Barry Sanderson
+
+FILE: pm8a-demod-decode6q.c
+  	Limited dmd_fidx to non-negative values
+
+FILE: doc/index.html
+  	Added more internal links and headings.
+----------------------------------------------------------------------
+**********************************************************************
+2002 Sep. 28  Barry Sanderson
+
+FILE: doc/index.html
+  	Removed the version specific reference.
+----------------------------------------------------------------------
+**********************************************************************
+2002 Sep. 24  Barry Sanderson
+
+FILE: pm8a-demod-decode6q.c
+	Changed value of gap_offi from 43 to 8.  43 was left over from the
+  (pm7) case where the leader and trailer were unmodulated.
+	Relaxed the criteria for a subcarrier to be considered "good" in
+  lm_match3, and relaxed the criteria for returning a value indicating
+  success.
+	Relaxed the criteria for calculating the least squares best fit of the
+  "good" subcarriers to their corresponding ideal values, when searching for
+  the leader and trailer.
+	Fixed the array of "good" subcarrier values passed to "cbfitx" so
+  that is is correct when not all of the subcarriers are "good".
+----------------------------------------------------------------------
+**********************************************************************
+2002 Aug. 31  Barry Sanderson
+
+FILE: ChangeLog
+  	Created, and made initial entries in this file.
+
+FILE: pm8a-demod-decode6q.c
+  	Added checking of value returned from fwrite().  Now, an error
+  message is generated if the wrong number of bytes was actually written.
+  	Added the freeing of dmamp[][].
+	Added the closing of irf2 for error exits lacking this operation.
+  	Added the removal of scratch files.
+
+---------------------------------------------------------------------
+**********************************************************************
+2002 Aug. 30  Barry Sanderson
+
+FILE: README
+  	Reference to version removed.
+
+FILE: flt-clip-scale-wav.c
+  	Added checking of value returned from fwrite().  Now, an error
+  message is generated if the wrong number of bytes was actually written.
+
+FILE: make-Wyman1x-wav
+  	Commented out the deletion of files: lo\[0-7\].flt pm\[0-7\].flt],
+  as this is now done by the modulator program (mod_pm8a).
+
+FILE: mod-pm8a.c
+  	Temporary files are now deleted from within this program, in order to
+  reduce the amount of temporary disk space used.
+  	Added checking of value returned from fwrite().  Now, an error
+  message is generated if the wrong number of bytes was actually written.
+
+FILE: doc/index.html
+  	Added information used to estimate amount of temporary disk space
+  used by transmit side programs.
+  	Added information used to estimate amount of memory and swap space
+  used by receive side program.
+
+ FILE: man-tx.html
+  	Corrected an error in one of the example commands.
+  	Removed the reference to manually deleting temporary files, which
+  are now deleted by the program.
+
+---------------------------------------------------------------------

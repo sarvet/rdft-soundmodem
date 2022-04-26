@@ -1,0 +1,237 @@
+#!/bin/sh
+# the next line restarts using tcl \
+exec tcl "$0" "$@"
+#
+#    program to create encoded wav file used by Wyman1x digital communications programs
+#    Copyright (C) 2001, 2003  Barry Sanderson
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#  A mailing address for the author is:
+#	Barry Sanderson
+#	1725 N. Bolton Ave.
+#	Indianapolis, IN 46218  USA
+#
+# Rev 19 May 2003 added: printf of: program name and version string,
+#	copyright statement and warranty disclamer.
+#	changed to pass stdout of modulator program and flt-clip-scale-wav
+#	program through to the stdout of this program.
+#	chirp signal deleted.
+#	l3c and t3c placed around output of modulator program
+# Rev 14 May 2003  added code to allow input path name for file to be
+#	be encoded, thus file no longer needs to be in current directory
+# Rev 02 Jan 2003  added code to take care of input file names containing
+#	spaces, which uses "system" command provided in Extended Tcl
+#		   removed commented out code that is no longer used to
+#	remove files
+# Rev 30 Aug 2002  commented out the deletion of files: lo\[0-7\].flt pm\[0-7\].flt]
+#	as this is now done by the modulator program (mod_pm9a). Barry Sanderson
+# Rev 05 Dec 2001  clipping level changed from 2.06 to 2.17
+# Rev 26 Nov 2001  version 1.1.0, uses "file delete ...", rather than
+#	"exec $rm ... " to delete programs. Barry Sanderson (BDS)
+# Rev 31 Aug 2001  clipping level changed from 2.17 to 2.06
+# Rev 31 May 2001  changed to Wyman1x case
+# Rev 14 May  2001  version 1.0.0 for initial release 
+# program to accept an input file name and a redundancy
+#	mode id number and to execute the programs to produce
+#	the proper wav file
+
+# set ancillary data file pathnames
+# uncomment and/or change the proper "set" line, for where you put the
+# ancillary data file 
+# the next line is for the file being in the current directory
+set two_tone "2tone1180-1520v4-3sec.flt"
+# the next line is for the file being in /usr/local/share/
+#set two_tone "/usr/local/share/2tone1180-1520v4-3sec.flt"
+
+# set file path names for test leader and trailer signals
+# uncomment and/or change the proper pair of "set" lines, for where you put the
+# data files for the test versions of the leader and trailer signals
+# the next two lines are for the files being in the current directory
+set lflt "l3c.flt"
+set tflt "t3c.flt" 
+# the next two lines are for the files being in /usr/local/share/
+#set lflt "/usr/local/share/l3c.flt"
+#set tflt "/usr/local/share/t3c.flt"
+
+# uncomment exactly one of the following 2 "set" lines, depending on what 
+# ancillary signal you want to come before the required portion of the signal
+
+# if you want nothing before the phase modulated signal
+# set exl [list ]
+
+# if you want 3 seconds of the 2 tone signal to come before the phase
+#	modulated signal
+set exl [list $two_tone]
+
+# set executable program names
+set bin2sym "bin2sym307pm8a"
+set mod_pm "mod-pm8a"
+set mk_wav "flt-clip-scale-wav"
+
+# set mode prefix for use in file names
+set mpfx "W1b"
+
+# program to concatenate files
+set cat "cat"
+
+# set fixed parameter value
+# This is the number of standard deviations (of the sample values)
+# at which clipping starts.
+# A value of 3.09 keeps the middle 99.8% of the sample values un-clipped
+# A value of 2.81 keeps the middle 99.5% of the sample values un-clipped
+# A value of 2.58 keeps the middle 99% of the sample values un-clipped
+# A value of 2.33 keeps the middle 98% of the sample values un-clipped
+# A value of 2.17 keeps the middle 97% of the sample values un-clipped
+# A value of 2.06 keeps the middle 96% of the sample values un-clipped
+set clip_sd 2.17
+
+
+# The lines below this one are not intended to be changed, however,
+#  if you want to examine the temporary files, which are normally
+#  deleted, you can comment out the lines that delete them.  Also,
+#  you may want to change the file names used for newly created files
+#  to something other than what is done below.
+
+
+puts stdout "\nmake-Wyman1x-wav version 2003May19\n"
+puts stdout "Copyright (C) 2003 Barry Sanderson"
+puts stdout "There is ABSOLUTELY NO WARRANTY  for make-Wyman1x-wav."
+puts stdout "make-Wyman1x-wav is covered by the the GNU General Public License."
+puts stdout "The file \"COPYING.txt\" states the conditions under which you may legally:"
+puts stdout "copy, modify, or distribute make-Wyman1x-wav.\n"
+
+# get process ID
+set my_pid [pid]
+
+# make sure there are at least 2 arguments
+if {$argc < 2} {
+  puts stderr "2 arguments are required."
+  puts stderr "  First, is the input file name."
+  puts stderr "  Second, is the indication of redundancy for the outer code."
+  puts stderr "    The second argument MUST be one of: 1, 2, 3, or 4"
+  puts stderr "    1 indicates the minimum amount of redundancy for the outer code."
+  puts stderr "    4 indicates the maximum amount of redundancy for the outer code."
+  exit -2
+} 
+
+# set redundancy mode related values
+set mode(1) 1 ; set mid(1) "1" ; set mn(1) 10
+set mode(2) 2 ; set mid(2) "2" ; set mn(2) 20
+set mode(3) 3 ; set mid(3) "3" ; set mn(3) 40
+set mode(4) 4 ; set mid(4) "4" ; set mn(4) 70
+
+set imode [lindex $argv 1]
+
+# make sure the 2nd argument is one of the 4 legal values
+if {![info exists mode($imode)]} {
+  puts stderr "The second argument MUST be one of: 1, 2, 3, 4"
+  exit -3
+}
+
+set infiler [lindex $argv 0]
+# escape any spaces in input file name
+set escs "\\\ "
+set numsp [regsub -all {\ +} $infiler $escs infilees]
+if {$numsp != 0} {
+  append infile \" $infiler \"
+  set file_base "tfile"
+} else {
+  set infile $infiler
+  set file_base [file tail $infile]
+}
+
+# make sure input file can be opened for reading
+if [ catch "open $infile r 0644" infid] {
+  puts stderr "Attempt to open input file failed: $infid"
+  exit -1
+}
+close $infid
+
+# set file name to use for output of bin2sym program
+append mpfx $mid($imode)
+append sfn1 $my_pid $file_base "." $mpfx
+
+# execute bin2sym program
+if [catch {system $bin2sym $infile $mn($imode) > $sfn1} rslt] {
+  puts stderr "$bin2sym failed: $rslt"
+  exit -4
+}
+
+# set file name to use for output of mod_pm program
+append sfn2 $sfn1 ".flt"
+
+# execute mod_pm program
+if [catch {exec $mod_pm $sfn1 $sfn2} sdl] {
+  puts stderr "$mod_pm failed: $sdl"
+  exit -5
+} else {
+  puts stdout $sdl
+# extract standard deviation from stdout of $mod_pm program
+  set sdok [regexp {sample values is +([0-9]+\.[0-9]+)} $sdl match std_dev]
+  if {$sdok != 1} {
+    puts stderr "Could not find standard deviation in output of $mod_pm"
+    exit -6
+  } else {
+    # set clipping level and scale factor to be used with flt-clip-scale program
+    set clip_level [expr $clip_sd * $std_dev]
+    set scalef [expr 16383 / $clip_level]
+  }
+}
+
+append sfn2m $sfn2 "x"
+# place any requested files in front of phase modulated signal
+if {[llength $exl] == 0} {
+  if [catch {exec $cat $lflt $sfn2 $tflt > $sfn2m} rslt] {
+      puts stderr "$cat failed: $rslt"
+      exit -11
+    }
+} else {
+  if {[llength $exl] == 1} {
+    if [catch {exec $cat [lindex $exl 0] $lflt $sfn2 $tflt > $sfn2m} rslt] {
+      puts stderr "$cat failed: $rslt"
+      exit -8
+    }
+  } else {
+    puts stderr "more than one file specified to precede signal"
+    exit -10
+  }  
+}
+  
+
+# set file name to use for final output .wav file
+append sfn3 $file_base "." $mpfx ".wav"
+
+# execute post-modulation processing program
+if [catch {system $mk_wav  $sfn2m $sfn3 $clip_level $scalef} rslt] {
+  puts stderr "$mk_wav failed: $rslt"
+  exit -7
+} else {
+  puts stdout $rslt
+}
+
+# rename final output file, if necessary
+if {$numsp != 0} {
+  append sfn4  [file tail $infiler] "." $mpfx ".wav"
+  file rename $sfn3 $sfn4
+}
+
+# remove temporary files
+file delete $sfn1 $sfn2m $sfn2
+
+# report clipping level and scale factor actually used
+puts stdout "Clipping value is $clip_level, scale factor is $scalef"
+
+exit 0

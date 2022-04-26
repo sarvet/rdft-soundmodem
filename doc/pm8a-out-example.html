@@ -1,0 +1,168 @@
+  <html><head><title>Example of dbgl=30 stdout of Wyman1x-demod-decode Program</title>
+  </head>
+  <body>
+  <h1>Example dbgl=30 stdout of Wyman1x-demod-decode Program</h1>
+  <pre>
+
+Wyman1x-demod-decode version 2003Jun02
+Copyright (C) 2003 Barry Sanderson
+There is ABSOLUTELY NO WARRANTY  for Wyman1x-demod-decode.
+Wyman1x-demod-decode is covered by the the GNU General Public License.
+The file "COPYING.txt" states the conditions under which you may legally:
+copy, modify, or distribute Wyman1x-demod-decode.
+
+For data file: VK3LM13-pm8a.wav
+	using version 2003Jun02 of Wyman1x-demod-decode program
+
+Sample index  ---------- leader --------------------
+              <a href="#r53">r53 val</a>    offset (Hz)     freq. scale   mode index
+   20964     664.5876      -26.83            0.999866       0
+
+Sample index  ---------- trailer --------------------
+              r53 val    offset (Hz)     freq. scale   mode index
+  253156     50.1414      -24.85            0.998926       0
+	<a href="#cppb">clock periods per block</a> is:  27903.742
+Expecting to find   9 framing sequences
+ Starting search at index   1647
+<a href="#Ris">Results of initial search for framing sequences</a>
+  sub-carrier  offset   min product
+     0        2082         0.08919
+     1        2083         0.19325
+     2        2092        0.032279
+     3        2098        0.086729
+     4        2112        0.063846
+     5        2130        0.055643
+     6        2141        0.070802
+     7        2152        0.084817
+<a href="#Bmp">Best min product found</a> is:  0.0072083, using an offset of   4
+Now using  27907.742 <a href="#cppb">clock periods per block</a>
+Starting pass number 2 through the demodulator.
+	clock periods per block is:  27908.595
+Expecting to find   9 framing sequences
+ Starting search at index   1608
+Results of initial search for framing sequences
+  sub-carrier  offset   min product
+     0        2104        0.044875
+     1        2105        0.059254
+     2        2115       0.0077578
+     3        2121        0.057702
+     4        2136       0.0042167
+     5        2151        0.027097
+     6        2160        0.062952
+     7        2173        0.047814
+Best min product found is:  0.0042622, using an offset of   1
+Now using  27909.596 clock periods per block
+Good cases => 1,  Bad cases => 0
+ framing --------- sub-carrier index----------
+  index   0    1    2    3    4    5    6    7
+     0    1    1    1    1    1    1    0    1  
+     1    1    0    1    1    1    1    1    1  
+     2    1    0    1    1    1    0    1    0  
+     3    1    1    1    1    1    1    1    0  
+     4    1    1    1    1    1    0    0    0  
+     5    1    0    1    1    1    1    0    0  
+     6    0    1    1    0    1    1    1    0  
+     7    1    1    1    0    1    1    0    1  
+     8    1    0    0    1    1    1    1    1  
+<a href="#Rbf">Results of best fit straight lines through better points</a>
+  sub-carrier    offset         slope
+     0       3712.054          27908.09
+     1         3719.8           27908.1
+     2       3721.917           27908.6
+     3       3722.128          27911.13
+     4       3738.956          27909.82
+     5       3761.283           27907.1
+     6       3773.471          27906.38
+     7        3774.67          27909.52
+Now using     27908.54 clock periods per block
+<a href=#Ecm>Error Correction Mode Determination Weights</a>
+  Mode Index    Weights
+      0         0.3564
+      1         4.7637
+      2         0.0000
+      3         0.0956
+<a href="ec-fmt.html">Block inner  |      outer code      | outer   |       inner code</a>
+  #   code   |       erasures       | code    |         changes
+      changes|1st   2nd   3rd   4th | changes |    0   1   2   3   4
+----  ------ |---   ---   ---   --- |   ---   |  --- --- --- --- ---
+  0     349     0h    0s    0t    6f      2  ||   58 153  89   6   0   +
+  1     337     0h    1s    5t    5f      8  ||   64 140  91   5   0   +
+  2     302     2h    0s    4t    9f      8  ||   84 139  68   9   0   +
+  3     421     1h    0s    9t   19f     15  ||   26 138 113  19   0   +
+  4     431     3h    0s   17t   28f     26  ||   17 135 106  28   0   +
+  5     422     2h    0s   15t   28f     17  ||   27 130 104  28   0   +
+  6     444     2h    0s    8t   31f     21  ||   18 143 104  31   0   +
+  7     254     0h    0s    0t    2f      1  ||  107 146  51   2   0   +
+Decoded result is file: robot-vk3lm-x2hs.png
+  0 bad blocks detected, out of   8 total blocks.
+  </pre>
+  <hr>
+  <h1>Explanations of Some of the Above Parameters</h1>
+
+  <a name="r53"></a>
+  <h2>r53</h2
+  <p>This number is a measure of the quality of fit between the actual
+    leader data, and the "ideal" leader data.  The larger this number is, the
+    better the fit.</p>
+
+  <a name="cppb"></a>
+  <h2>clock periods per block</h2>
+      <p>This is the number of receiver clock periods per block, based on the
+       slope of the least squares best fit straight line to the measured vs.
+       ideal frequencies of the leader subcarriers.</p>
+  
+  <a name="Ris"></a>
+  <h2>Results of initial search for framing sequences</h2>
+  <ul>
+  <li>subcarrier
+    <p>This is an index identifying which subcarrier the data are for.</p>
+  <li>offset
+    <p>This is the number of sample periods, from the reference point, to
+       the beginning of the first framing sequence.</p>
+  <li>min product
+    <p>This is the smallest product of mean_squared_errors and standard_deviation
+     (of mean squared errors) for all of the framing sequences across all of
+     the "offset" values tried.</p>
+  </ul>
+  <p>The smaller the "min product" the better.</p>
+
+  <a name="Bmp"></a>
+  <h2>Best min product found</h2>
+  <p>After searching a range of "clock periods per block", around the previous
+     estimate, this number is the best found.  It was found using the number
+     listed as the "offset" as an offset to the previous estimate of the 
+     number of clock periods per block.</p>
+     <p>The next line of output states the updated value of the number of
+  	clock periods per block, which will be the same as before, if the
+  	offset is 0.</p>
+
+  <a name="Rbf"></a>
+  <h2>Results of best fit straight lines through better points</h2>
+  <ul>
+  <p>These numbers result from fitting a straight line, for each subcarrier,
+     through the points corresponding to "1" in the "Better than average cases"
+     table.</p>
+  <li>subcarrier
+    <p>This is an index identifying which subcarrier the data are for.</p>
+  <li>offset
+    <p>This is the number of sample periods, from the reference point, to
+       the beginning of the first framing sequence.</p>
+  <li>slope
+    <p>This is the final estimate for the number of clock periods per block,
+  	based on the data for the respective subcarrier.</p>
+  </ul>
+  <p>The final estimate for the number of clock periods per block is listed
+     at the bottom of this table.</p>
+
+  <a name="Ecm"></a>
+  <h2>Error Correction Mode Determination Weights</h2>
+  <ul>
+  <li>Mode Index
+    <p>This number indicates which of the 4 possible levels of redundancy
+  	in the outer code the "weight" is for.</p>
+  <li>Weights
+    <p>This is the sum of 1/(distance_from_closest) for each of the 12
+  	mode id symbols.</p>
+  </ul>
+  <p>The mode with the largest weight is used in the decoding process.</p> 
+  </body></html>

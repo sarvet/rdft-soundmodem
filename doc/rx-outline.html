@@ -1,0 +1,139 @@
+  <html><head><title>Outline of Wyman1x-demod-decode
+</title></head><body>
+  <p>Below are the major comments extracted, in order, from the
+  "pm8a-demod-decode6q" program.  They provide an outline of the
+  operations performed by this program.</p>
+  <pre>
+/* finish initialization of distance threshold arrays */
+/* open data file */
+
+/* find leader, restrict search to first half of file */
+
+/* find trailer, restrict search to last half of file */
+
+ cppblk= cppblk_nom/f_slope;	/* set clock periods per block */
+/* found end of message */
+
+/* calculate expected number of framing sequences */
+/* allocate memory to store framing sequence mean squared errors */
+/* allocate memory to store positions for each framing sequence */
+/* allocate memory to store "good/bad" indication for each framing sequence */
+/* allocate memory to store offset information for each framing sequence */
+/* set local oscillator frequencies */
+/* set origin for local oscillator angle calculation */
+ cppblk= cppblk_nom/f_slope;	/* set clock periods per block */
+
+/* demodulate each subcarrier */
+/* translate to baseband, for data in samsi */
+/* multiply by sin and cos of local oscillator */
+/* do decimation */
+/* do interpolation */
+/* calculate angle, and remove discontinuities */
+/* calculate Amplitude */
+/* adjust angle of local oscillators */
+
+/* calculate and store (in a separate buffer for each lo) the average difference
+	data for the pm8-scratch file just written */
+  if(lo==0)	/* if first pass */
+/* allocate buffers */
+ /* end of lo==0 */
+
+/* calculate starting point for search */
+/* search for framing sequences */
+   /* calculate product of mean and standard deviation,
+	 leaving out largest value, if num_frsq > 2 */
+ } /* end of for lo searching for framing sequences */
+
+/* determine clock periods per block, from best framing sequence data*/
+/* don't use data from subcarrier 0, due to non-linear phase filters in
+	radios */
+/* set index of best framing sequence */
+/* use best (except for lowest freq) overall subcarrier for next step */
+/* use best framing sequence for this subcarrier as the reference */
+/* search for a better value for cppblk */
+/* calculate product of mean and standard deviation,
+	 leaving out largest value, if num_frsq > 2 */
+
+/* refine framing sequence positions, based on actual data, for best subcarrier */
+/* calculate least squares best fit straight line through the "better than
+	 average" framing sequence positions */
+/* if offset is different from 0, and this is the first pass,
+   demodulate again */
+
+/* calculate expected position for all framing sequences for all subcarriers,
+	based on best framing sequence for best subcarrier */
+
+/* take care of lowest frequency subcarrier as a special case */
+/* calculate product of mean and standard deviation,
+	leaving out largest value, if num_frsq > 2 */
+/* refine framing sequence positions, based on actual data */
+/* calculate least squares best fit straight line through the "better than
+	 average" framing sequence positions */
+/* leave out highest and lowest, use average of remaining slopes for subsequent calculations */
+
+/* limit cppblk_ft */
+/* limit cppblk_off values */
+/* substitute for the average or worse cases, framing sequence positions
+	calculated from the best fit straight lines */
+
+/* adjust for tuning offset changes */
+
+/* determine error correction mode (# of redundancy symbols per block) */
+/* check three pair of symbols preceding 1st framing sequence */
+/* check three pair of symbols following last framing sequence */
+
+/* for each block 
+	decode inner code from demodulated phase changes to channel symbol numbers
+	decode array of channel symbol numbers
+	output erasure and error correction information
+	if 1st block
+		extract filename, and file length, open file, store
+		 remaining data in file
+	else
+		store all "non-dummy" data in file
+*/
+/* refine symbol positions, based on amplitude variation information:
+
+   1. Fill sym_pos[][] with nominal symbol positions, based on surrounding
+      framing sequence positions.  Fill ma1[][] with 0x00, to indicate
+      nominal calculated positions.
+   2. For all symbol locations with 0x00 in ma1[][], if local maximum of
+      cross-correlation between amplitude reference pattern and actual
+      amplitude values is greater than thld_amp1, and is within ossi_amp1
+      index values of the nominal position, then use the location of this
+      local maximum as the position of that symbol, and set the
+      corresponding location in ma1[][] to 0x01.
+   3. Extend, form both ends, each run of 0x01 values in ma1[][].  A run 
+      is extended by adjacent local maximum cross-correlation values being
+      > thld_amp2 and within ossi_amp2 locations of the, f_slope adjusted,
+      position from the previous symbol's position.  Set the corresponding
+      locations in ma1[][] to 0x02, for those symbols whose position was
+      changed in this step.
+   4. Replace symbol positions corresponding to remaining runs of 0x00 in
+      ma1[][] with linearly interpolated values, based on the positions 
+      corresponding to the non-0x00 entries in ma1[][] adjacent to the
+      runs of 0x00.  Leave any end symbol positions with 0x00 values in
+      ma1[][] as they are.  Set locations in ma1[][] corresponding to
+      symbol positions changed in this step to 0x03.
+*/
+/* merge raw blocks before decoding */
+	/* save for diognostic output */
+/* use hard erasures first, then soft erasures, until maximum number
+	of allowed erasures are used up, or all hard and soft erasures
+	are used up
+	Soft erasures should really be sorted first, so that "most likely
+	to be wrong" symbols are erased first */
+	/* sort */
+/* choose which merged blocks to use */
+/* merge decoded blocks */
+  if (j==0)	/* 1st block is special case */
+/* extract header
+	get file name, and file length
+	open file, write data from first block
+*/
+/* process remaining blocks */
+nrmex:			/* normal exit */
+	/* remove separate files for each code block */
+  </pre>
+  <hr>
+  </body></html>

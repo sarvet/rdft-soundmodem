@@ -1,0 +1,103 @@
+  <html><head><title>Tx Side Manual Procedure
+  </title></head> <body>
+  <h1>Tx Side Manual Procedure</h1>
+  <p>If you do not have tclsh installed, you can execute the three transmit
+  side programs as described below.  The running example used below is for
+  the case of an original file named "file.xyz" using 40% redundancy in the
+  outer code, with the final result being the file named
+  "file.xyz.W13.wav".</p>
+
+  <h2>bin2sym307pm8a</h2> <p>The "bin2sym307pm8a" program requires two
+  parameters.  First is the name of the file to be transfered. Second is a
+  code for the amount of redundancy to be used in the outer level code.  The
+  second parameter must be one of: 10, 20, 40, or 70.  The output is written
+  to stdout.  It consists of a list of 32 bit unsigned integers.  Each
+  integer represents one symbol.</p>
+
+  <p>The command, for the running example, would be:
+  <pre>
+
+  bin2sym307pm8a file.xyz 40 > tmp1
+
+  </pre>
+  </p>
+
+  <h2>mod-pm8a</h2>
+  <p>The "mod-pm8a" program requires two parameters.  First is the name of
+  the input file.  Second is the name of the output file.  The standard
+  deviation of the sample values is written to stdout.  The output file
+  consists of a sequence of 32 bit float values.</p>
+
+  <p>The command, for the running example, would be:
+  <pre>
+
+  mod-pm8a tmp1 tmp2 > tmp3
+
+  </pre>
+  </p>
+
+  <h2>clipping level and scale factor calculation</h2>
+  <p>From the contents of the file "tmp3", get the value of the standard
+  deviation of the sample values.  Call this value "sdsv".  For the case of
+  the clipping level set to 2.17 standard deviations, calculate the value of
+  the clipping parameter to supply to the "flt-clip-scale-wav" program by the
+  following equation.</p>
+  <pre>
+
+  clip_level = 2.17 * sdsv
+
+  </pre>
+  <p>Calculate the value of the scale factor to supply to the
+  "flt-clip-scale-wav" program by the following equation.
+  <pre>
+
+  scale_factor = 16383/clip_level
+
+  </pre>
+  </p>
+
+  <h2>concatenate with ancillary data</h2>
+  <p>To produce a file that contains the "2-tone" signal and the "chirp"
+  signal before the phase modulated signal, execute the following command.
+  <pre>
+
+  cat 2tone1180-1520v4-3sec.flt chirp3b.flt tmp2 > tmp4
+
+  </pre></p>
+
+  <h2>flt-clip-scale-wav</h2>
+  <p>The "flt-clip-scale-wav" program requires 4 parameters.
+  <ol>
+  <li>First is the input file name.
+  <li>Second is the output file name.
+  <li>Third is the clipping level.
+  <li>Fourth is the scale factor.
+  </ol>
+  The clipping level and scale factor
+  are the floating point numbers calculated above.</p>
+
+  <p>The command, for the running example, would be:
+  <pre>
+
+  flt-clip-scale-wav tmp4 file.xyz.W13.wav clip_level scale_factor
+
+  </pre>
+  where the actual numbers are supplied for "clip_level" and "scale_factor".
+  </p>
+
+  <h2>remove temporary files</h2>
+  <p>To remove all of the temporary files created by the above steps, execute
+  the following command.
+  <pre>
+
+  rm tmp[1234]
+
+  </pre>
+  </p>
+  <p>Note that deletion of the lo[0-7].flt and pm[0-7].flt temporary files is
+  now done by the mod-pm8a program, and thus, does not need too be done
+  manually.
+  </p>
+  <hr>
+  <p>Barry Sanderson, 2002 Aug. 30</p>
+  </body></html>

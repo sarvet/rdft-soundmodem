@@ -1,0 +1,374 @@
+<html><head><title>Index to Wyman1x Documentation
+</title></head>
+<body>
+<h1>Jump to:</h1>
+<ul>
+<li><a href="#bkgnd">Background</a>
+<p><li><a href="#inst">Instructions on installing</a> the programs</p>
+
+<li><a href="#use">Program Usage</a>
+<ul><li><a href="#warn">WARNINGS</a>
+    <li>Transmit Side
+     <ul><li><a href="#txw">Disk Space Usage</a>
+         <li><a href="#txb">Generation of wav File</a>
+     </ul>
+    <li>Receive Side
+     <ul><li><a href="#sam">Sampling Parameters</a>
+         <li><a href="#rxw">Memory Usage</a>
+         <li><a href="#rxb">Recovery of Binary File</a>
+         <li><a href="#cmb">Combining Multiple Code Blocks</a>
+     </ul>
+</ul>
+<p>
+<li>Operational Considerations</p>
+
+<p>The primary concern here is setting an acceptable audio level.  This
+needs to be done once, prior to using the programs to transfer files.
+Once you determine acceptable levels for your equipment, you can just
+return to the corresponding settings, without repeating the procedures
+described in the links just below.</p>
+
+<ul><li><a href="1j.htm">Tx Side</a>
+    <li><a href="1k.htm">Rx Side</a>
+</ul>
+<p><li><a href="rx-outline.html">Outline of Wyman1x-demod-decode</a> Program</p>
+<p><li><a href="#auth">Authentication</a> Information</p>
+</ul>
+<hr>
+<a name="bkgnd"></a>
+<h1>Background</h1>
+
+  <p>The purpose of this software is to enable binary data files to be
+  transferred reliably, via a relatively poor audio channel.  An example of
+  such a channel is that used between Australia and the United States in
+  20 meter Single Side Band amateur radio transmissions.</p>
+
+  <p>Software for both the transmit side operations and the receive side
+  operations is provided.  The transmit side software requires the name of a
+  file to be transferred and a choice of one of four levels of redundancy to
+  be supplied to it.  The result of the transmit side software is a wav file
+  that represents the contents of the file to be transfered, at the chosen
+  level of redundancy.  Playing this wav file generates the audio signal that
+  is to be transmitted to those who wish to have a copy of the file being
+  transfered.</p>
+
+  <p>The receive side software requires the name of a wav file as its input. 
+  This wav file should be one recorded from a transmission of a wav file
+  produced by the transmit side software.  The receive side software
+  demodulates and decodes the information.  If
+  all the errors are corrected, then the receive side software will have
+  stored a copy of the original file on the hard disk of the computer on
+  which it ran (i.e. the file will have been successfully transfered).</p>
+
+  <p>Beginning with version 1.3.0, compensation for frequency changes that
+  occur during a reception is applied by the Wyman1x-demod-decode program. 
+  In some cases this compensation is detrimental to successful decoding.  For
+  63 receptions of transmissions from Australia to the United States in the
+  Spring of 2001, the net effect of applying the frequency change
+  compensation was beneficial, that is, more files were successfully decoded
+  with the frequency change compensation than without it.</p>
+
+  <p>Beginning with version 1.2.0, if all the errors are corrected in some
+  code blocks, but not in all code blocks, the completely corrected code
+  blocks are written to separate files.  Three digits are appended to the
+  file name of the entire file being transferred to make the file names used
+  to store the individual code blocks.  Thus, completely corrected code
+  blocks from multiple receptions <a href="#cmb">may be combined</a>
+  into a completely corrected
+  file as long as each code block was completely corrected in at least one
+  transmission.</p>
+
+  <hr>
+<a name="inst"></a>
+<h1>Installation</h1>
+<ol>
+<li>set desired value of "dbgl"
+<p>There is one compile time parameter to set. It is "dbgl" in the file
+  "pm8a-demod-decode6q.c".  The setting of this parameter controls how
+  much  information is written to stdout by the "Wyman1x-demod-decode"
+  program.</p>
+<p>The relevant line to edit, and the following comment, from
+  "pm8a-demod-decode6q.c" are reproduced below.</p>
+<pre>
+#define	dbgl	30
+/* dbgl value controls what information is printed to stdout, and stderr
+
+ (dbgl > 0)  =>  final tuning, final cppblk, mode weights, and error counts
+		 written
+ (dbgl > 10)  =>  leader & trailer information and initial framing sequence
+		 search information written
+ (dbgl > 20)  =>  final framing sequence search information written
+ (dbgl > 30)  =>  positions for all framing sequences written, and
+		   adjustments (at framing sequence times) to compensate
+		   for changes in frequency written
+ (dbgl > 35) => symbol position adjustment information, based on
+		 amplitude, written to stderr
+ (dbgl > 40)  =>  gnuplot style files containing demodulation results
+		 for each subcarrier written; 40 < dbgl < 50 dumps
+		 filtered, normalized angle differences; dbgl >= 50
+		 dumps average amplitudes
+ (dbgl > 50)  =>  symbol numbers for both codes for each block written
+*/
+</pre>
+<p>An <a href="pm8a-out-example.html">example</a> for the default
+  case of dbgl=30 has been augmented with an explanation for some of the quantities
+  printed out by the program.</p>
+<p>For the case of dbgl > 40, the demodulated results file names are of the
+  form "loxdif23n.gnu", where "x" is: 0, 1, 2, 3, 4, 5, 6, and 7, for the
+  respective subcarriers.  These same names are used, no matter what the
+  input file name is.  Thus, if you want to save a particular case, you need
+  rename the files to some other name.</p>
+
+<li>execute make
+<p>Executing "make" in the directory containing the source files will
+  compile and link all of the necessary programs.  Four executable programs
+  result from this process.  They are named:
+  <ul>
+  <li>bin2sym307pm8a
+  <li>mod-pm8a
+  <li>flt-clip-scale-wav
+  <li>Wyman1x-demod-decode
+  </ul>
+</p>
+<p>The warnings produced by gcc using the supplied Makefile warn of 22
+  variables in "pm8a-demod-decode6q.c" and 16 variables in "decode2.c" that
+  "might be used uninitialized".  The <a href="gcc-stderr.html">stderr from
+gcc</a> listing these warnings is included for reference.  None of these 38
+variables is used uninitialized.</p>
+
+<li>move executables to desired location
+<p>Move the four executable programs just made, and the supplied executable
+tcl script to a directory listed in your PATH environmental variable.</p>
+
+<li>move ancillary data files
+<p>Move the three supplied ancillary data files to a location of your choice. 
+These three files can be shared between multiple users.  The three files are
+named: "2tone1180-1520v4-3sec.flt", "l3c.flt" and "t3c.flt".</p>
+
+<li>edit "make-Wyman1x-wav"
+<p>"make-Wyman1x-wav" is a supplied tcl script.  In this script, the default location for the
+  three ancillary data files is the current directory.  If you put the three
+  ancillary data files somewhere other than the directory that is current,
+  when you execute "make-Wyman1x-wav", then you need to edit "make-Wyman1x-wav" to
+  set the locations of the three ancillary data files.  A commented out
+  example in "make-Wyman1x-wav" is for the case of the three ancillary data files
+  being in "/usr/local/share/".</p>
+</ol>
+  <hr>
+<a name="use"></a>
+<h1>Program Usage</h1>
+<a name="warn"></a>
+<h2>WARNINGS</h2>
+
+  <p>The behavior of this software reflects the
+  research environment in which it was developed.  In some respects it
+  behaves differently than you would likely expect.  These
+  differences in behavior are listed below.<p>
+<ul>
+<li><p>Multiple instances of the same program, run by the same user in the same
+current directory, WILL NOT WORK.  This is due to the use of fixed names for
+some temporary files.</p>
+
+<li><p>Existing files with the same name are OVERWRITTEN WITHOUT WARNING.</p>
+
+<li><p>"Wyman1x-demod-decode" only works with 16 bit samples recorded at a sample
+rate near 11,025 Hz., but DOES NOT CHECK this in the ".wav" file header.</p>
+</ul>
+
+<a name="txw"></a>
+  <h3>Transmit Side Disk Space Usage</h3>
+
+  <p>The "mod-pm8a" program uses a significant amount of disk space for
+  temporary storage.  The amount depends on the size of the file being
+  transfered and the amount of redundancy used.  The table below lists a
+  factor which can be multiplied by the size of the file being transfered to
+  yield an estimate of the peak amount of disk space that will be needed.</p>
+
+  <p><pre>
+     amount of redundancy    factor for est. of disk space
+     --------------------    -----------------------------
+            10 %                     4600
+            20 %                     5200
+            40 %		     6800
+            70 %                    13000
+  </pre></p>
+
+  <p>The above table is for files about 2000 bytes in length.  The factor
+  decreases slightly with increasing file size.  An example of the use of the
+  above table is: for a file size of 3000 bytes and 20 % redundancy, the
+  estimated amount of temporary disk storage needed is 3000 * 5200 bytes. 
+  This is 15,600,000 bytes.</p>
+
+
+<a name="txb"></a>
+<h2>Transmit Side: Generation of wav File</h2>
+<p>If you have "tcl" installed then you can use the supplied
+  "make-Wyman1x-wav" script to run the 3 programs in sequence to generate a
+  ".wav" file (to be played by a sound card) corresponding to a source file
+  (that is to be transferred) and the chosen level of redundancy in the
+  outer code.</p>
+<p>The "make-Wyman1x-wav" script provides you the choice of having a 3 
+  second version of the 2 tone test signal at the beginning of the wav file,
+  or not having the 3 second version of the 2 tone test signal at all.
+  If audio levels are to high, the 2 tone test signal can be used to
+  <a href="1j.htm">detect this improper</a> operating condition.
+  Another reason for
+  including the 2 tone test signal is to provide the person at the
+  receiving end time enough to "push the record button".  The
+  default is to include the 2 tone test signal.  This provides 3 seconds of
+  sound that is not
+  used by the "Wyman1x-demod-decode" program.</p>
+<p>Before running the "make-Wyman1x-wav" script, you can set whether, or not,
+  you want to include the 2 tone test signal.  The instructions for doing
+  this are in the "make-Wyman1x-wav" file.</p>
+<p>The "l3c.flt" and "t3c.flt" signals are placed in front of, and after, the
+  phase modulated signal.  The "l3c.flt" signal is used to start the
+  automatic recording of a wav file by the DIGTRX program.  The "t3c.flt"
+  signal is used to stop the automatic recording, and begin demodulation and
+  decoding of the recorded wav file by the DIGTRX program.  These two signals
+  were chosen so that they could be used for this automatic reception mode
+  of operation, and so they could also be used to replace the current
+  leader and trailer signals.</p>
+<p>If you don't have "tcl" installed, then you can follow the
+  <a href="man-tx.html">manual procedure</a> for running the 3 Tx side
+  programs in sequence, or <a href="http://tcl.activestate.com/">download</a>
+  and install the tcl software.</p>
+
+<h3>Using make-Wyman1x-wav</h3>
+<p>Two parameters are required by "make-Wyman1x-wav".  First is the name of the
+  file to be transferred.  Second is one of: 1, 2, 3, or 4.  The second
+  parameter selects the amount of redundancy to be used in the outer code,
+  according to the following table.</p>
+<p><ul>
+<li>1 => 10% redundancy
+<li>2 => 20% redundancy
+<li>3 => 40% redundancy
+<li>4 => 70% redundancy
+</ul></p>
+
+<p>For example, the following command line:
+<pre>
+
+make-Wyman1x-wav  file.xyz 3
+
+</pre>
+produces a file named "file.xyz.W1b3.wav".  The audio produced by playing this
+  file represents "file.xyz", with 40% of the outer code symbols being
+  redundant.</p>
+
+<a name="sam"></a>
+  <h3>Sampling Parameters</h3>
+
+  <p>The short coming I expect to cause the most problems is the failure to
+  check the sample rate and number of bits per sample in the .wav file header
+  that is input to the "Wyman1x-demod-decode program".  None of the ".wav" recording
+  programs I am aware of default to the 11,025 Hz, 16-bits per sample
+  required by my program.  Even I didn't always remember to select the
+  correct recording mode, before making recordings.</p>
+
+  <p>The good news is that other sample rates and bit depths can be converted to
+  11,025 Hz and 16 bits, and that recordings made at 22,050 Hz with only 8
+  bits per sample have decoded just as well as those made at 11,025 Hz and 16
+  bits per sample.  The bad news is that my program will fail, without
+  telling you why, if it is given a ".wav" file that is not 11,025 Hz with 16
+  bits per sample.</p>
+
+<a name="rxw"></a>
+  <h3>Receive Side Memory Usage</h3>
+
+  <p>The "Wyman1x-demod-decode" program dynamically allocates a significant
+  amount of memory.  To estimate how much extra memory will be needed, you can
+  multiply the size of the "wav" file being operated on by 35.  This factor
+  increases with increasing file size.  For a "wav" file of 500,000 bytes the
+  factor is about 30.  For a "wav" file of 2,600,000 bytes the factor is
+  about 35; for this case the estimate of extra memory needed is
+  91,000,000.</p>
+
+  <p>In order for the "Wyman1x-demod-decode" program to operate correctly,
+  the sum of physical memory available to the program, after it is loaded,
+  and the amount of swap space available must be greater than the amount of
+  dynamically allocated memory needed by the program.</p>
+
+  <p>If you want to operate on large "wav" files, you may need to increase
+  the amount of swap space available.</p>
+
+<a name="rxb"></a>
+<h2>Receive Side: Recovery of Binary File</h2>
+<p>The syntax normally used is:
+<pre>
+
+Wyman1x-demod-decode recorded-file.wav > recorded-file.txt
+
+</pre>
+  The "Wyman1x-demod-decode" program writes information gathered during the
+  demodulation and decoding process to stdout.  Redirecting stdout to a file
+  with the same root name as the recorded ".wav" file, to which it pertains,
+  is an easy way to keep track of this information.</p>
+
+<a name="cmb"></a>
+<h2>Receive Side: Combining Multiple Code Blocks</h2>
+
+  <p>Beginning with version 1.2.0, each completely corrected code block is
+  written to a separate file.  A three digit number is appended to the name
+  of the file being transferred in order to generate file names for these
+  separate code block files.  If
+  the file being transferred is named "file.xyz" then the name for the first
+  code block is "file.xyz000", the name for the second code block is
+  "file.xyz001, etc.</p>
+
+  <p>If all code blocks are completely corrected, then all of the files
+  containing just the data for the individual code blocks are deleted. 
+  However, if at least one code block was not completely corrected, then all
+  of the files containing completely corrected code blocks are left intact. 
+  This facilitates combining completely corrected code blocks from multiple
+  receptions into a single completely corrected file.</p>
+
+  <p>After getting at least one completely corrected copy of each code block
+  for a particular file (from an arbitrary number of receptions), the
+  following command (to a bash shell), for the example of the file name being
+  "file.xyz", will combine the individual code blocks into the completely
+  corrected file.</p>
+  <pre>
+  cat file.xyz??? > file.xyz
+  </pre>
+
+  <p>Note that these multiple receptions could be from different receivers
+  and a single transmission, as might be the case of the transmitter being
+  located in a spacecraft and the signal being received at multiple
+  locations.  These multiple receptions could also be from a single receiver
+  and multiple transmissions, as might be the case for two operators working
+  under difficult conditions.</p>
+
+
+  <hr>
+<a name="auth"></a>
+<h1>Authentication Information</h1>
+<p>The file "md5sums.txt.asc" contains the md5sums for all but one of
+ the files in this distribution.  The file excluded from the md5sums list is
+ "md5sums.txt.asc".  This file is signed with my private pgp key.  The
+ signature can be checked using my pgp public key, which is included in the
+ file "doc/barry-pgp-key2.asc".</p>
+
+  <p>To verify that you have an uncompromised copy of my public pgp key, you
+  can send a request for verification to the U. S. postal address listed in
+  the opening comment of the various source files.  I will then send the pgp
+  "fingerprint" value (from executing "pgp -kvc") for my public pgp key back
+  to your postal address.</p>
+
+  <p>After adding my public pgp key to your public key ring, you can check
+  the signature on the "md5sums.txt.asc" file with the command:  <pre>
+
+  pgp md5sums.txt.asc
+
+  </pre>executed from the directory containing the "md5sums.txt.asc" file.</p>
+
+  <p>If the signature is verified, there will be a file named "md5sums.txt"
+  created in the directory.  You can then check that the md5sums on the files
+  you have match those listed in the file "md5sums.txt" with the following
+  command:<pre>
+
+  md5sum -c md5sums.txt
+
+  </pre>executed from the directory which contains the "md5sums.txt" file.</p>
+<hr>
+</body></html>

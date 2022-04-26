@@ -1,0 +1,49 @@
+  The "2tone1180-1520v4-12sec.wav" file is for use is setting up the audio
+  level going from the sound card to the radio, and the audio level going
+  from the radio to the sound card.
+
+  2 TONE TEST SIGNAL
+  ------------------
+  	
+  The "2tone1180-1520v4-12sec.wav" file (2tone for short) is used to set the
+  amplitude of the audio signal from the sound card to the radio.  The signal
+  produced by playing the 2tone file lasts for 12 seconds.  It is the sum of
+  a 1180 Hz and a 1520 Hz sinusoid.  For the first 3 seconds, the amplitude
+  of the 2tone signal is the full scale reference level.  For the next 2
+  seconds the amplitude is reduced by a factor of 0.707107, yielding a 3db
+  drop in power relative to the first 2 seconds.  For the next 2 seconds the
+  amplitude is further reduced by a factor of 0.707107, yielding another 3db
+  drop in power, relative the the second 2 second interval.  This 6 second
+  sequence is then repeated, thus there will be a 6db step up in power half
+  way through the 12 second signal.
+
+  	Usage
+  	------
+  To use the 2tone signal to set the amplitude of the signal going into the
+  radio:
+  	1) Listen to the 2tone signal from your computer's sound system,
+  	   without transmitting anything via radio.  Make sure you can
+  	   hear all of the  volume steps in the 2tone signal.
+  	2) Transmit the 2tone signal via your radio.  Either monitor your
+  	   transmission, with another radio, or have someone else monitor
+  	   your transmission of the 2tone signal.  Adjust the amplitude
+  	   of the signal coming from your sound card to your radio so that
+  	   whoever is doing the monitoring of your transmission can hear
+  	   all of the volume steps in the 2tone signal.
+
+  When your transmission of the 2tone signal produces all of the volume
+  steps in the signal, then you have a signal that is not driving your
+  transmitter into non-linear operation (which is the desired situation).
+
+  	What to Expect
+  	--------------
+  Since the modulated signals used to represent binary data have a
+  higher peak to RMS ratio than does a Slow Scan signal, the audio from your
+  transmissions, when the above procedure is used to set the audio level,
+  will not be as loud as it normally is for a Slow Scan signal.  The person
+  receiving your transmission may need to turn up the audio level on
+  their receiver, from the setting they use to receive a Slow Scan signal. 
+  This is normal.  Turning up the level going into the transmitter past the
+  point of linear operation will produce a louder signal, but that signal
+  will be distorted (likely) beyond to point of being usable.
+

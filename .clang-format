@@ -1,0 +1,49 @@
+---
+IndentPPDirectives: BeforeHash
+SortIncludes: CaseSensitive
+AlignEscapedNewlines: Left
+AlignOperands: AlignAfterOperator
+AlwaysBreakTemplateDeclarations: No
+AllowShortEnumsOnASingleLine: false
+SpaceBeforeInheritanceColon: true
+AlignArrayOfStructures: Right
+AlignTrailingComments: true
+QualifierAlignment: Leave
+AlwaysBreakAfterReturnType: None
+AllowShortFunctionsOnASingleLine: None
+IndentWrappedFunctionNames: true
+SpaceBeforeCtorInitializerColon: true
+PackConstructorInitializers: CurrentLine
+AllowShortIfStatementsOnASingleLine: Never
+SpaceBeforeParens: Never
+BinPackParameters: true
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+AlignAfterOpenBracket: Align
+AllowShortLambdasOnASingleLine: None
+LambdaBodyIndentation: OuterScope
+ReflowComments: true
+SortUsingDeclarations: true
+SpaceBeforeCpp11BracedList: true
+AllowShortLoopsOnASingleLine: false
+SpaceAfterCStyleCast: true
+AllowAllArgumentsOnNextLine: true
+BinPackArguments: true
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  IndentBraces: true
+  SplitEmptyFunction: true
+  SplitEmptyNamespace: true
+  SplitEmptyRecord: true

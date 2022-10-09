@@ -1020,11 +1020,12 @@ int main(int argc, char *argv[], char *env[])
 
  unsigned char	verstr[]="2003Jun02";
  unsigned char	progname[]="Wyman1x-demod-decode";
- unsigned char	cww[]="Copyright (C) 2003 Barry Sanderson
-There is ABSOLUTELY NO WARRANTY  for Wyman1x-demod-decode.
-Wyman1x-demod-decode is covered by the the GNU General Public License.
-The file \"COPYING.txt\" states the conditions under which you may legally:
-copy, modify, or distribute Wyman1x-demod-decode.";
+ unsigned char	cww[]="Copyright (C) 2003 Barry Sanderson There is ABSOLUTELY\
+		       NO WARRANTY  for Wyman1x-demod-decode.\
+		       Wyman1x-demod-decode is covered by the the GNU General\
+		       Public License. The file \"COPYING.txt\" states the \
+		       conditions under which you may legally: copy, modify,\
+		       or distribute Wyman1x-demod-decode.";
 
 
  printf("\n%s version %s\n%s\n\n", progname, verstr, cww);

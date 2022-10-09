@@ -236,11 +236,10 @@ int main(int argc, char *argv[], char *env[])
 
  unsigned char	verstr[]="2003May19";
  unsigned char	progname[]="mod-pm8a";
- unsigned char	cww[]="Copyright (C) 2003 Barry Sanderson
-There is ABSOLUTELY NO WARRANTY  for mod-pm8a.
-mod-pm8a is covered by the the GNU General Public License.
-The file \"COPYING.txt\" states the conditions under which you may legally:
-copy, modify, or distribute mod-pm8a.";
+ unsigned char	cww[]="Copyright (C) 2003 Barry Sanderson There is ABSOLUTELY \
+	 NO WARRANTY  for mod-pm8a. mod-pm8a is covered by the the GNU General\
+	  Public License. The file \"COPYING.txt\" states the conditions under\
+	   which you may legally: copy, modify, or distribute mod-pm8a.";
 
 
  printf("\n%s version %s\n\n%s\n\n", progname, verstr, cww);

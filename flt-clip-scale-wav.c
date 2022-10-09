@@ -90,11 +90,12 @@ int main(int argc, char *argv[], char *env[])
 
  unsigned char	verstr[]="2003May19";
  unsigned char	progname[]="flt-clip-scale-wav";
- unsigned char	cww[]="Copyright (C) 2003 Barry Sanderson
-There is ABSOLUTELY NO WARRANTY  for flt-clip-scale-wav.
-flt-clip-scale-wav is covered by the the GNU General Public License.
-The file \"COPYING.txt\" states the conditions under which you may legally:
-copy, modify, or distribute flt-clip-scale-wav.";
+ unsigned char	cww[]="Copyright (C) 2003 Barry Sanderson\n \
+		       There is ABSOLUTELY NO WARRANTY for\
+		       flt-clip-scale-wav. flt-clip-scale-wav is covered by\
+		       the GNU General Public License. The file \"COPYING.txt\"\
+		       states the conditions under which you may legally:\
+		       copy, modify, or distribute flt-clip-scale-wav.";
 
 
  printf("\n%s version %s\n\n%s\n", progname, verstr, cww);

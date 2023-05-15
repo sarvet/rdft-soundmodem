@@ -17,20 +17,20 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 /*  A mailing address for the author is:
-	Barry Sanderson
-	1725 N. Bolton Ave.
-	Indianapolis, IN 46218  USA
+        Barry Sanderson
+        1725 N. Bolton Ave.
+        Indianapolis, IN 46218  USA
 */
 /* Rev 25 Nov 2001	version 1.1.0, for initial public release */
 
-extern	void	ds1t(ftype *in, ftype *out, unsigned int count);
-extern	void	ds2t(ftype *in, ftype *out, unsigned int count);
-extern	void	ds3t(ftype *in, ftype *out, unsigned int count);
+extern void ds1t(ftype *in, ftype *out, unsigned int count);
+extern void ds2t(ftype *in, ftype *out, unsigned int count);
+extern void ds3t(ftype *in, ftype *out, unsigned int count);
 
-extern	void	ds1nb2(ftype *in, ftype *out, unsigned int count);
-extern	void	ds2nb2(ftype *in, ftype *out, unsigned int count);
-extern	void	ds3nb2(ftype *in, ftype *out, unsigned int count);
+extern void ds1nb2(ftype *in, ftype *out, unsigned int count);
+extern void ds2nb2(ftype *in, ftype *out, unsigned int count);
+extern void ds3nb2(ftype *in, ftype *out, unsigned int count);
 
-signed int	I40xxPI(ftype *in, ftype *out, unsigned int num_sp);
+signed int I40xxPI(ftype *in, ftype *out, unsigned int num_sp);
 
-extern	void	lpf01(ftype *in, ftype *out, unsigned int count);
+extern void lpf01(ftype *in, ftype *out, unsigned int count);

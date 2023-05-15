@@ -3,14 +3,14 @@ IndentPPDirectives: BeforeHash
 SortIncludes: CaseSensitive
 AlignEscapedNewlines: Left
 AlignOperands: AlignAfterOperator
-AlwaysBreakTemplateDeclarations: No
+AlwaysBreakTemplateDeclarations: MultiLine
 AllowShortEnumsOnASingleLine: false
 SpaceBeforeInheritanceColon: true
 AlignArrayOfStructures: Right
 AlignTrailingComments: true
 QualifierAlignment: Leave
 AlwaysBreakAfterReturnType: None
-AllowShortFunctionsOnASingleLine: None
+AllowShortFunctionsOnASingleLine: Empty
 IndentWrappedFunctionNames: true
 SpaceBeforeCtorInitializerColon: true
 PackConstructorInitializers: CurrentLine
@@ -20,7 +20,7 @@ BinPackParameters: true
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortBlocksOnASingleLine: Empty
 AlignAfterOpenBracket: Align
-AllowShortLambdasOnASingleLine: None
+AllowShortLambdasOnASingleLine: Empty
 LambdaBodyIndentation: OuterScope
 ReflowComments: true
 SortUsingDeclarations: true
@@ -41,9 +41,82 @@ BraceWrapping:
   AfterExternBlock: true
   BeforeCatch: true
   BeforeElse: true
-  BeforeLambdaBody: false
-  BeforeWhile: false
+  BeforeLambdaBody: true
+  BeforeWhile: true
   IndentBraces: true
-  SplitEmptyFunction: true
-  SplitEmptyNamespace: true
-  SplitEmptyRecord: true
+  SplitEmptyFunction: false
+  SplitEmptyNamespace: false
+  SplitEmptyRecord: false
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveBitFields:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+AlwaysBreakBeforeMultilineStrings: true
+BitFieldColonSpacing: Both
+BreakBeforeBinaryOperators: All
+BreakBeforeBraces: Allman
+BreakBeforeConceptDeclarations: Allowed
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: AfterColon
+BreakInheritanceList: AfterColon
+BreakStringLiterals: true
+Cpp11BracedListStyle: false
+DeriveLineEnding: true
+DerivePointerAlignment: true
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Never
+FixNamespaceComments: true
+IncludeBlocks: Merge
+IndentAccessModifiers: false
+IndentCaseBlocks: true
+IndentCaseLabels: true
+IndentExternBlock: AfterExternBlock
+IndentGotoLabels: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+Language: Cpp
+NamespaceIndentation: All
+PointerAlignment: Left
+SeparateDefinitionBlocks: Always
+ShortNamespaceLines: 1
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: true
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: true
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpacesInAngles: Never
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
+SpacesInSquareBrackets: false
+SpaceBeforeParensOptions:
+  AfterControlStatements: false
+  AfterForeachMacros: false
+  AfterFunctionDeclarationName: false
+  AfterFunctionDefinitionName: false
+  AfterIfMacros: false
+  AfterOverloadedOperator: true
+  AfterRequiresInClause: true
+  AfterRequiresInExpression: true
+  BeforeNonEmptyParentheses: false

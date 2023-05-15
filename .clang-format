@@ -103,7 +103,7 @@ SpaceAfterTemplateKeyword: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCaseColon: true
 SpaceBeforeRangeBasedForLoopColon: true
-SpaceBeforeSquareBrackets: true
+SpaceBeforeSquareBrackets: false
 SpaceInEmptyBlock: false
 SpaceInEmptyParentheses: false
 SpacesInAngles: Never
